@@ -12,6 +12,7 @@ import (
 
 //https://itnext.io/explain-to-me-go-concurrency-worker-pool-pattern-like-im-five-e5f1be71e2b0
 //https://itnext.io/refactor-go-worker-pool-a-way-around-to-the-sync-package-7d45b1afb768
+
 func TryReceive(c <-chan int) (data int, more, ok bool) {
 
 	select {

@@ -2,64 +2,78 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 )
 
 func main() {
-	tree := create(20)
-	fmt.Println("The value of the root of the tree is", tree.Value)
-	traverse(tree)
-	fmt.Println()
-	tree = insert(tree, -10)
-	tree = insert(tree, -2)
-	traverse(tree)
-	fmt.Println()
-	fmt.Println("The value of the root of the tree is", tree.Value)
+	test := &Node{
+		Left:  nil,
+		Value: 100,
+		Right: nil,
+	}
 
+	fmt.Println(test)
 }
 
-type Tree struct {
-	Left  *Tree
+type Node struct {
+	Left  *Node
 	Value int
-	Right *Tree
+	Right *Node
 }
 
-func traverse(t *Tree) {
-	if t == nil {
-		return
+func (n *Node) String() string {
+	var leftValue, rightValue int
+
+	if n.Left != nil {
+		leftValue = n.Left.Value
+	}
+	if n.Left != nil {
+		rightValue = n.Left.Value
 	}
 
-	traverse(t.Left)
-	fmt.Println(t.Value, " ")
-	traverse(t.Right)
+	return fmt.Sprintf("Val=%d L=%d R=%d\n", n.Value, leftValue, rightValue)
 }
 
-func create(n int) *Tree {
-	var t *Tree
-	rand.Seed(time.Now().Unix())
-	for i := 0; i < 2*n; i++ {
-		temp := rand.Intn(n * 2)
-		t = insert(t, temp)
-	}
-
-	return t
-}
-
-func insert(t *Tree, v int) *Tree {
-	if t == nil {
-		return &Tree{nil, v, nil}
-	}
-
-	if v == t.Value {
-		return t
-	}
-
-	if v < t.Value {
-		t.Left = insert(t.Left, v)
-		return t
-	}
-
-	t.Right = insert(t.Right, v)
-	return t
-}
+//
+//type Tree struct {
+//	Root *Node
+//	Len  int
+//}
+//
+//func traverse(t *Tree) {
+//	if t == nil {
+//		return
+//	}
+//
+//	traverse(t.Left)
+//	fmt.Println(t.Value, " ")
+//	traverse(t.Right)
+//}
+//
+//func create(n int) *Tree {
+//	var t *Tree
+//	rand.Seed(time.Now().Unix())
+//	for i := 0; i < 2*n; i++ {
+//		temp := rand.Intn(n * 2)
+//		t = insert(t, temp)
+//	}
+//
+//	return t
+//}
+//
+//func insert(t *Tree, val int) *Tree {
+//	if t == nil {
+//		return &Tree{nil, val, nil}
+//	}
+//
+//	if val == t.Value {
+//		return t
+//	}
+//
+//	if val < t.Value {
+//		t.Left = insert(t.Left, val)
+//		return t
+//	}
+//
+//	t.Right = insert(t.Right, val)
+//	return t
+//}

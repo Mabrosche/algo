@@ -4,38 +4,90 @@ import (
 	"fmt"
 )
 
+type Int struct {
+	Slice []int
+}
+
+func (q *Int) Enqueue(i int) {
+	q.Slice = append(q.Slice, i)
+}
+
+func (q *Int) Dequeue() int {
+	res := q.Slice[0]
+	q.Slice = q.Slice[1:len(q.Slice)]
+	return res
+}
+
+func (q Int) String() string {
+	return fmt.Sprint(q.Slice)
+}
+
+////////////
+
 type Node struct {
 	Value int
 	Next  *Node
 }
 
-var size = 0
-var queue = new(Node)
+type Queue struct {
+	Root *Node
+	Len  int
+}
 
-func Push(t *Node, v int) bool {
-	if queue == nil {
-		queue = &Node{v, nil}
-		size++
-		return true
+func main() {
+	var q Queue
+	q.traverse()
+	//q.Push(q.Root, 10)
+	//q.Push(q.Root, 11)
+	//fmt.Println("Size:", q.Len)
+
+	//v, b := Pop(queue)
+	//if b {
+	//	fmt.Println("Pop:", v)
+	//}
+	//fmt.Println("Size:", size)
+	//
+	//for i := 0; i < 5; i++ {
+	//	Push(queue, i)
+	//}
+	//traverse(queue)
+	//fmt.Println("Size:", size)
+	//
+	//v, b = Pop(queue)
+	//if b {
+	//	fmt.Println("Pop:", v)
+	//}
+	//fmt.Println("Size:", size)
+	//
+	//v, b = Pop(queue)
+	//if b {
+	//	fmt.Println("Pop:", v)
+	//}
+	//fmt.Println("Size:", size)
+	//traverse(queue)
+}
+
+func (q *Queue) Push(node *Node, v int) bool {
+	node = &Node{v, nil}
+	if q != nil {
+		node.Next = q.Root
 	}
 
-	t = &Node{v, nil}
-	t.Next = queue
-	queue = t
-	size++
+	q.Root = node
+	q.Len++
 
 	return true
 }
 
-func Pop(t *Node) (int, bool) {
-	if size == 0 {
-		return 0, false
+func (q *Queue) Pop(t *Node) int {
+	if q.Len == 0 {
+		return -1
 	}
 
-	if size == 1 {
-		queue = nil
-		size--
-		return t.Value, true
+	if q.Len == 1 {
+		q.Root = nil
+		q.Len--
+		return t.Value
 	}
 
 	temp := t
@@ -44,54 +96,19 @@ func Pop(t *Node) (int, bool) {
 		t = t.Next
 	}
 
-	v := (temp.Next).Value
+	v := temp.Next.Value
 	temp.Next = nil
+	q.Len--
 
-	size--
-	return v, true
+	return v
 }
 
-func traverse(t *Node) {
-	if size == 0 {
-		fmt.Println("Empty Queue!")
-		return
+func (q *Queue) traverse() {
+	res := q.Root
+	for res != nil {
+		fmt.Printf("%d -> \n", res.Value)
+		res = res.Next
 	}
 
-	for t != nil {
-		fmt.Printf("%d -> ", t.Value)
-		t = t.Next
-	}
-	fmt.Println()
-}
-
-func main() {
-	queue = nil
-	Push(queue, 10)
-	fmt.Println("Size:", size)
-	traverse(queue)
-
-	v, b := Pop(queue)
-	if b {
-		fmt.Println("Pop:", v)
-	}
-	fmt.Println("Size:", size)
-
-	for i := 0; i < 5; i++ {
-		Push(queue, i)
-	}
-	traverse(queue)
-	fmt.Println("Size:", size)
-
-	v, b = Pop(queue)
-	if b {
-		fmt.Println("Pop:", v)
-	}
-	fmt.Println("Size:", size)
-
-	v, b = Pop(queue)
-	if b {
-		fmt.Println("Pop:", v)
-	}
-	fmt.Println("Size:", size)
-	traverse(queue)
+	fmt.Println("Empty Queue!")
 }
