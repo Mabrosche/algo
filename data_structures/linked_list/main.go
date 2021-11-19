@@ -5,14 +5,14 @@ import (
 )
 
 type node struct {
-	data int
-	next *node
+	value int
+	next  *node
 }
 
 type linkedList struct {
 	head *node
 	tail *node
-	size int
+	len  int
 }
 
 func (ll *linkedList) addAtTheEnd(n *node) {
@@ -23,68 +23,69 @@ func (ll *linkedList) addAtTheEnd(n *node) {
 		ll.tail.next = n
 	}
 
-	ll.size++
+	ll.len++
 }
 
 func (ll *linkedList) prepend(n *node) {
-	second := ll.head
+	temp := ll.head
 	ll.head = n
-	ll.head.next = second
-	ll.size++
+	ll.head.next = temp
+
+	if ll.tail == nil {
+		ll.tail = ll.head
+	}
+
+	ll.len++
 }
 
 func (ll *linkedList) printLine() {
-	for ll.size != 0 {
-		fmt.Printf("%d\n", ll.head.data)
-		ll.size--
+	temp := ll.head
+	for ll.len != 0 {
+		fmt.Printf("%d\n", temp.value)
+		temp = temp.next
+		ll.len--
 	}
 }
 
 func (ll *linkedList) deleteWithValue(value int) {
-	if ll.size == 0 {
+	if ll.len == 0 {
 		return
 	}
 
-	if ll.head.data == value {
+	if ll.head.value == value {
 		ll.head = ll.head.next
-		ll.size--
+		ll.len--
 		return
 	}
 
 	previous := ll.head
-	for previous.next.data != value {
+	for previous.next.value != value {
 		if previous.next.next == nil {
 			return
 		}
 		previous = previous.next
 	}
 	previous.next = previous.next.next
-	ll.size--
+	ll.len--
 }
 
-//func lookupNode(t *Node, v int) bool {
-//	if root == nil {
-//		t = &Node{v, nil}
-//		root = t
-//		return false
-//	}
-//
-//	if v == t.Value {
-//		return true
-//	}
-//
-//	if t.Next == nil {
-//		return false
-//	}
-//
-//	return lookupNode(t.Next, v)
-//}
+func (ll linkedList) lookupNode(v int) int {
+	if ll.len == 0 || ll.head.next == nil {
+		return -1
+	}
+
+	if v == ll.head.value {
+		return v
+	}
+
+	return ll.lookupNode(v)
+}
 
 func main() {
 	ll := linkedList{}
-	node1 := &node{data: 10}
-	node2 := &node{data: 20}
-	node3 := &node{data: 30}
+	node1 := &node{value: 10}
+	node2 := &node{value: 20}
+	node3 := &node{value: 30}
 
 	ll.prepend(node1)
 	ll.prepend(node2)
