@@ -33,7 +33,6 @@ func (n *Node) String() string {
 	return fmt.Sprintf("Val=%d L=%d R=%d\n", n.Value, leftValue, rightValue)
 }
 
-//
 //type Tree struct {
 //	Root *Node
 //	Len  int

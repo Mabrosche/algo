@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 //https://www.youtube.com/watch?v=9PHkM0Jri_4&list=PLrmLmBdmIlpv_jNDXtJGYTPNQ2L1gdHxu&index=9
-func (t *Tree) dbtLevelOrderTraversal(root *Node) {
+func (t Tree) bftLevelOrderTraversal(root *Node) {
 	if root == nil {
 		return
 	}
