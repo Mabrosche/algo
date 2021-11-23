@@ -10,7 +10,9 @@ func main() {
 	b := newNode(2)
 	c := newNode(3)
 
-	d := newNode(4)
+	d := newNode(7)
+	e := newNode(5)
+	f := newNode(8)
 
 	t := &bst{}
 	t.node = b
@@ -18,11 +20,14 @@ func main() {
 	b.right = c
 	c.right = d
 
-	t.len = 4
+	d.left = e
+	d.right = f
+
+	t.len = 6
 
 	res := t.dftTraversalIterative()
-	for i := range res {
-		fmt.Println(res[i])
+	for v := range res {
+		fmt.Print(res[v].data)
 	}
 }
 
@@ -37,47 +42,141 @@ type node struct {
 	right *node
 }
 
-func (b bst) dftTraversalIterative() []*node {
-	if b.len == 0 {
+func (b bst) dfSearch(root *node) []*node {
+	if root == nil {
 		return nil
 	}
 
 	var res []*node
-	var stk []*node
-	stk = append(stk, b.node)
 
+	res = append(res, b.dftTraversalRecursive(root.left)...)
+	res = append(res, root)
+	res = append(res, b.dftTraversalRecursive(root.right)...)
+
+	return res
+}
+
+func (b bst) bftTraversalIterative() []*node {
+	if b.node == nil {
+		return nil
+	}
+
+	var res []*node
+
+	var qu []*node
+	qu = append(qu, b.node)
 	for b.len > 0 {
-		node := stk[len(stk)-1]
-		fmt.Println("---> ", node)
-		res = append(res, node)
+		current := qu[0]
+		fmt.Println("---> ", current)
+		res = append(res, current)
 
 		b.len--
-		stk = stk[:len(stk)-1]
+		qu = qu[1:]
 
-		if node.right != nil {
-			stk = append(stk, node.right)
+		if current.left != nil {
+			qu = append(qu, current.left)
 		}
-		if node.left != nil {
-			stk = append(stk, node.left)
+		if current.right != nil {
+			qu = append(qu, current.right)
 		}
 	}
 
 	return res
 }
 
-func (n *node) BreadthFirstSearch(array []int) []int {
-	queue := []*node{n}
-	for len(queue) > 0 {
-		current := queue[0]
-		queue := queue[1:]
+//https://www.youtube.com/watch?v=fAAZixBzIAI
+func (b bst) dftTraversalRecursive(root *node) []*node {
+	if root == nil {
+		return nil
+	}
 
-		array = append(array, current.Value)
+	var res []*node
 
-		for _, child := range n.Children {
-			queue := append(queue, child)
+	res = append(res, b.dftTraversalRecursive(root.left)...)
+	res = append(res, root)
+	res = append(res, b.dftTraversalRecursive(root.right)...)
+
+	return res
+}
+
+func (b bst) dftTraversalIterative() []*node {
+	if b.len == 0 {
+		return nil
+	}
+
+	var stk []*node
+	stk = append(stk, b.node)
+
+	var res []*node
+	for b.len > 0 {
+		current := stk[len(stk)-1]
+		fmt.Println("---> ", current)
+		res = append(res, current)
+
+		b.len--
+		stk = stk[:len(stk)-1]
+
+		if current.right != nil {
+			stk = append(stk, current.right)
+		}
+		if current.left != nil {
+			stk = append(stk, current.left)
 		}
 	}
+
+	return res
 }
+
+//https://www.youtube.com/watch?v=5cPbNCrdotA&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&index=37
+//func (b bst) getSuccessor(data int) *node {
+//	if b.len == 0 {
+//		return nil
+//	}
+//
+//	// search the Node - O(h)
+//	current := b.find(b.node, data)
+//	if current == nil {
+//		return nil
+//	}
+//
+//	// case 1: Node has right subtree
+//	if current.right != nil {
+//		b.findMin(current.right)
+//	} else { // case
+//		var successor *node
+//		ancestor := b.node
+//
+//		for ancestor != current {
+//			if current.data < ancestor.data {
+//				// so far this is the deepest node for which current node is in left
+//				successor = ancestor
+//				ancestor = ancestor.left
+//			} else {
+//				ancestor = ancestor.right
+//			}
+//		}
+//		return successor
+//	}
+//
+//}
+
+func (b bst) findMin(root *node) *node {
+	if root == nil {
+		return nil
+	}
+
+	for root.left != nil {
+		root = root.left
+	}
+	return root
+}
+
+//func (b bst) find(root *node, data int) *node {
+//	if(root == NULL) return NULL;
+//	else if(root->data == data) return root;
+//	else if(root->data < data) return Find(root->right,data);
+//	else return Find(root->left,data);
+//}
 
 func newNode(val int) *node {
 	return &node{

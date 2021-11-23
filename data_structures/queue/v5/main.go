@@ -14,7 +14,7 @@ func (q *Int) Enqueue(i int) {
 
 func (q *Int) Dequeue() int {
 	res := q.Slice[0]
-	q.Slice = q.Slice[1:len(q.Slice)]
+	q.Slice = q.Slice[1:]
 	return res
 }
 
@@ -37,6 +37,7 @@ type Queue struct {
 func main() {
 	var q Queue
 	q.traverse()
+
 	//q.Push(q.Root, 10)
 	//q.Push(q.Root, 11)
 	//fmt.Println("Size:", q.Len)
