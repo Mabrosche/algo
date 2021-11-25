@@ -94,6 +94,11 @@ func main() {
 	//fmt.Println(ll)
 	ll.printLine()
 
+	//var res []*node
+	//res = append(res, ll.reverseLinkedList(ll.head))
+	//
+	//fmt.Println(res)
+
 	//root = nil
 	//traverse(root)
 	//addNode(root, 1)
