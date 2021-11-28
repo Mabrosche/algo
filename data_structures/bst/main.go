@@ -6,17 +6,6 @@ import (
 	"strings"
 )
 
-type node struct {
-	value int
-	left  *node
-	right *node
-}
-
-type bst struct {
-	root *node
-	len  int
-}
-
 func main() {
 	n := &node{1, nil, nil}
 	n.left = &node{0, nil, nil}
@@ -29,19 +18,30 @@ func main() {
 
 	fmt.Println(b)
 
-	b.add(5)
-	b.add(4)
-	b.add(6)
+	b.appendNode(b.root, 5)
+	b.appendNode(b.root, 4)
+	b.appendNode(b.root, 6)
 
 	fmt.Println(b)
 
-	fmt.Println(b.search(6))
-	fmt.Println(b.search(3))
+	//fmt.Println(b.search(6))
+	//fmt.Println(b.search(3))
+	//
+	//b.remove(6)
+	//fmt.Println(b)
+	//b.remove(3)
+	//fmt.Println(b)
+}
 
-	b.remove(6)
-	fmt.Println(b)
-	b.remove(3)
-	fmt.Println(b)
+type node struct {
+	value int
+	left  *node
+	right *node
+}
+
+type bst struct {
+	root *node
+	len  int
 }
 
 func (n node) String() string {
@@ -50,39 +50,33 @@ func (n node) String() string {
 
 func (b bst) String() string {
 	sb := strings.Builder{}
-	b.inOrderTraversal(&sb)
-
+	b.inOrderTraversal(&sb, b.root)
 	return sb.String()
 }
 
-func (b bst) inOrderTraversal(sb *strings.Builder) {
-	b.inOrderTraversalByNode(sb, b.root)
-}
-
-func (b bst) inOrderTraversalByNode(sb *strings.Builder, root *node) {
+func (b bst) inOrderTraversal(sb *strings.Builder, root *node) {
 	if root == nil {
 		return
 	}
 
-	b.inOrderTraversalByNode(sb, root.left)
+	b.inOrderTraversal(sb, root.left)
 	sb.WriteString(fmt.Sprintf("%s ", root))
-	b.inOrderTraversalByNode(sb, root.right)
+	b.inOrderTraversal(sb, root.right)
 }
 
-func (b *bst) add(value int) {
-	b.root = b.addByNode(b.root, value)
-	b.len++
-}
-
-func (b *bst) addByNode(root *node, value int) *node {
+func (b *bst) appendNode(root *node, value int) *node {
 	if root == nil {
+		b.len++
 		return &node{value: value}
 	}
 
 	if value < root.value {
-		root.left = b.addByNode(root.left, value)
+		root.left = b.appendNode(root.left, value)
+		b.len++
+
 	} else {
-		root.right = b.addByNode(root.right, value)
+		root.right = b.appendNode(root.right, value)
+		b.len++
 	}
 
 	return root

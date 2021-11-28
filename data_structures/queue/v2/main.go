@@ -2,37 +2,9 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
-
-type Int struct {
-	Slice []int
-}
-
-func (q *Int) Enqueue(i int) {
-	q.Slice = append(q.Slice, i)
-}
-
-func (q *Int) Dequeue() int {
-	res := q.Slice[0]
-	q.Slice = q.Slice[1:len(q.Slice)]
-	return res
-}
-
-func (q Int) String() string {
-	return fmt.Sprint(q.Slice)
-}
-
-////////////
-
-type Node struct {
-	Value int
-	Next  *Node
-}
-
-type Queue struct {
-	Root *Node
-	Len  int
-}
 
 func main() {
 	var q Queue
@@ -67,8 +39,20 @@ func main() {
 	//traverse(queue)
 }
 
-func (q *Queue) Push(node *Node, v int) bool {
-	node = &Node{v, nil}
+////////////
+
+type Node struct {
+	Next  *Node
+	Value int
+}
+
+type Queue struct {
+	Head *Node
+	Tail *Node
+	Len  int
+}
+
+func (q *Queue) Push(v int) bool {
 	if q != nil {
 		node.Next = q.Root
 	}
@@ -101,6 +85,20 @@ func (q *Queue) Pop(t *Node) int {
 	q.Len--
 
 	return v
+}
+
+func (q Queue) IsEmpty() bool {
+	return q.Head == q.Tail
+}
+
+func (n Node) String() string {
+	return strconv.Itoa(n.Value)
+}
+
+func (q Queue) String() string {
+	sb := strings.Builder{}
+	q.traverse(sb)
+	return sb.String()
 }
 
 func (q *Queue) traverse() {

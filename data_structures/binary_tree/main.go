@@ -15,23 +15,28 @@ func main() {
 }
 
 type Node struct {
-	Left  *Node
 	Value int
+	Left  *Node
 	Right *Node
 }
 
-func (n *Node) String() string {
-	var leftValue, rightValue int
-
-	if n.Left != nil {
-		leftValue = n.Left.Value
-	}
-	if n.Left != nil {
-		rightValue = n.Left.Value
-	}
-
-	return fmt.Sprintf("Val=%d L=%d R=%d\n", n.Value, leftValue, rightValue)
+type BST struct {
+	Root *Node
+	Len  int
 }
+
+//func (n *Node) String() string {
+//	var leftValue, rightValue int
+//
+//	if n.Left != nil {
+//		leftValue = n.Left.Value
+//	}
+//	if n.Left != nil {
+//		rightValue = n.Left.Value
+//	}
+//
+//	return fmt.Sprintf("Val=%d L=%d R=%d\n", n.Value, leftValue, rightValue)
+//}
 
 //
 //type Tree struct {
